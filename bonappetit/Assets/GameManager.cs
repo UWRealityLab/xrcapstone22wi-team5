@@ -54,6 +54,41 @@ public class GameManager : MonoBehaviour
 
     }
 
+        public void DrawOrder()
+    {
+        if (canMakeMore())
+        {
+            orderNum++;
+            Order newOrder = new Order(orderNum);
+            openOrders.Add(orderNum, newOrder);
+
+            createTicket(newOrder);
+        }
+    }
+
+    public void RedrawLastOrder()
+    {
+        Order order = (Order)openOrders[orderNum];
+        Destroy(order.gObj);
+
+        createTicket(order);
+    }
+
+    public bool canMakeMore()
+    {
+        return openOrders.Count < MAX_ORDERS;
+    }
+
+    private void createTicket(Order newOrder)
+    {
+        GameObject newTicket = Instantiate(ticketPrefab, ticketSpawn.position, Quaternion.identity);
+
+        newTicket.GetComponent<Printable>().orderNum = newOrder.orderNum;
+        newTicket.GetComponent<Printable>().orderString = newOrder.ToString();
+
+        newOrder.gObj = newTicket;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -66,7 +101,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void DrawOrder() {
+    /*private void DrawOrder() {
         if (openOrders.Count < MAX_ORDERS) {
             orderNum++;
             Order newOrder = new Order(orderNum);
@@ -76,7 +111,7 @@ public class GameManager : MonoBehaviour
             newTicket.GetComponent<Printable>().orderNum = orderNum;
             newTicket.GetComponent<Printable>().orderString = newOrder.ToString();
         }
-    }
+    }*/
 
     public float GetScore() {
         return score;
@@ -131,6 +166,7 @@ public class GameManager : MonoBehaviour
     private class Order {
         public int orderNum;
         public int partySize;
+        public GameObject gObj;
         public List<Orderable> contents = new List<Orderable>();
         public Order(int orderNum) {
             float rand = Random.Range(0, 1);
