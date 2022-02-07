@@ -10,12 +10,6 @@ public class Knob : MonoBehaviour
     public Light greenLight;
     public Light redLight;
 
-    public AudioClip on;
-
-    public AudioClip off;
-
-    private AudioSource a;
-
     public readonly string[] labels4 = {"Off", "Low", "Medium", "High"};
     public readonly string[] labels2 = {"Off", "On"};
 
@@ -23,7 +17,6 @@ public class Knob : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    a = GetComponent<AudioSource>();
     val = 0; // off 
     if (greenLight != null && redLight != null) {
         redLight.enabled = true;
@@ -31,12 +24,17 @@ public class Knob : MonoBehaviour
     }
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+    
+    }
+
     public void RotateKnob()
     {
         float rotateDegrees = 360f / numSettings;
         transform.Rotate(0f, 0f, rotateDegrees);
         if (val == numSettings - 1) {
-            a.PlayOneShot(off);
             val = 0;
             if (greenLight != null && redLight != null) {
                 greenLight.enabled = false;
@@ -44,7 +42,6 @@ public class Knob : MonoBehaviour
             }
         } else {
             val++;
-            a.PlayOneShot(on);
             if (greenLight != null && redLight != null) {
                 redLight.enabled = false;
                 greenLight.enabled = true;
