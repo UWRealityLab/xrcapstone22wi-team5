@@ -14,10 +14,6 @@ public class Steak : MonoBehaviour
     public Material done;
     public Material burnt;
 
-    public AudioClip sizzle;
-
-    private AudioSource a;
-
     
     public float searTime = 0;
     private MeshRenderer steakMesh;
@@ -56,9 +52,9 @@ public class Steak : MonoBehaviour
             Destroy(smokeInstance);
         }
         if (searTime <= 120) {
-            steakMesh.material.Lerp(raw, done, searTime/120);
+            steakMesh.material = raw;
         } else if (searTime <= 180){
-            steakMesh.material.Lerp(done, burnt, (searTime - 120)/60);
+            steakMesh.material = done;
         } else {
             steakMesh.material = burnt;
         }
