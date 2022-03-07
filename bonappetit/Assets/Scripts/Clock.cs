@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using UnityEngine.XR.Interaction.Toolkit;
+
 public class Clock : MonoBehaviourPunCallbacks
 {
     public float startTime = -1;
@@ -17,6 +18,15 @@ public class Clock : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.CurrentRoom != null) {
+            ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
+            if(!ht.ContainsKey("time")){
+                GAME_LENGTH = 240;
+            }else{
+                string time = ((string)ht["time"]).Split(':')[0];
+                GAME_LENGTH = int.Parse(time)*60;
+            }
+        }
         t = GetComponentInChildren<TextMeshPro>();
         t.text = (GAME_LENGTH / 60).ToString("00") + ":" + (GAME_LENGTH % 60).ToString("00");
         PhotonNetwork.AutomaticallySyncScene = false;
@@ -48,5 +58,9 @@ public class Clock : MonoBehaviourPunCallbacks
         int minutes = (int) time_elapsed / 60;
         int seconds = (int) time_elapsed % 60;
         return (minutes.ToString("00") + ":" + seconds.ToString("00"));
+    }
+
+    public static int getGameLength(){
+        return GAME_LENGTH;
     }
 }

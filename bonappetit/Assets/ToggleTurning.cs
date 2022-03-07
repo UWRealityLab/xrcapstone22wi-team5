@@ -18,7 +18,9 @@ public class ToggleTurning : MonoBehaviour
 	{
 		if (PhotonNetwork.CurrentRoom != null) {
             ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
-            ht["turnOption"] = mainSlider.value;
+            ht["turnOption"] = (int) mainSlider.value;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(ht);
         }
+        
 	}
 }

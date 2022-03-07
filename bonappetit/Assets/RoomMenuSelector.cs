@@ -27,7 +27,6 @@ public class RoomMenuSelector : MonoBehaviourPunCallbacks
         index = 0;
         list = Menu[MenuType];
         maxIdx = list.Count - 1;
-        
     }
 
     // Update is called once per frame
@@ -35,6 +34,12 @@ public class RoomMenuSelector : MonoBehaviourPunCallbacks
     {
         label.text = "<b>"+ list[index] +"</b> ";
         //update the UI
+        if (PhotonNetwork.CurrentRoom != null) {
+            ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
+            ht[MenuType] = list[index];
+            PhotonNetwork.CurrentRoom.SetCustomProperties(ht);
+        }
+        
     }
 
     public void increment()
@@ -42,10 +47,10 @@ public class RoomMenuSelector : MonoBehaviourPunCallbacks
         if(index < maxIdx){
             index = index + 1;
         }
-        if (PhotonNetwork.CurrentRoom != null) {
-            ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
-            ht[MenuType] = list[index];
-        }
+        // if (PhotonNetwork.CurrentRoom != null) {
+        //     ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
+        //     ht[MenuType] = list[index];
+        // }
     }
 
     public void decrement()
@@ -54,9 +59,9 @@ public class RoomMenuSelector : MonoBehaviourPunCallbacks
             index = index - 1;
         }
 
-        if (PhotonNetwork.CurrentRoom != null) {
-            ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
-            ht[MenuType] = list[index];
-        }
+        // if (PhotonNetwork.CurrentRoom != null) {
+        //     ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
+        //     ht[MenuType] = list[index];
+        // }
     }
 }
